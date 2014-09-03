@@ -1,0 +1,131 @@
+// ---------------------------------------------------------------------------------------------------------------------
+//
+// Sass version
+//  Author: Rafal Bromirski
+//  Repository: https://github.com/paranoida/sass-mediaqueries
+//  www: http://paranoida.com/
+//  twitter: http://twitter.com/paranoida
+//  dribbble: http://dribbble.com/paranoida
+//
+// Stylus version
+//  Author: Aleksej Kamynin
+//  Repository: https://github.com/betaagency-os/stylus-mediaqueries
+//  www: http://betaagency.ru
+//
+//  Licensed under a MIT License
+//
+// ---------------------------------------------------------------------------------------------------------------------
+//
+// Mixins:
+//   @ min-screen(width)                      // shortcut for @media screen and (min-width ...)
+//   @ max-screen(width)                      // shortcut for @media screen and (max-width ...)
+//   @ screen(min-width, max-width)           // shortcut for @media screen and (min-width ...) and (max-width ...)
+//   ---
+//   @ min-screen-height(height)              // shortcut for @media screen and (min-height ...)
+//   @ max-screen-height(height)              // shortcut for @media screen and (max-height ...)
+//   @ screen-height(min-height, max-height)  // shortcut for @media screen and (min-height ...) and (max-height ...)
+//   ---
+//   @ iphone3                                // only iPhone (2, 3G, 3GS) landscape & portrait
+//   @ iphone3(landscape)                     // only iPhone (2, 3G, 3GS) only landscape
+//   @ iphone3(portrait)                      // only iPhone (2, 3G, 3GS) only portrait
+//   ---
+//   @ iphone4                                // only iPhone (4, 4S) landscape & portrait
+//   @ iphone4(landscape)                     // only iPhone (4, 4S) only landscape
+//   @ iphone4(portrait)                      // only iPhone (4, 4S) only portrait
+//   ---
+//   @ iphone5                                // only iPhone (5) landscape & portrait
+//   @ iphone5(landscape)                     // only iPhone (5) only landscape
+//   @ iphone5(portrait)                      // only iPhone (5) only portrait
+//   ---
+//   @ ipad                                   // all iPads (1, 2, 3, 4, Mini) landscape & portrait
+//   @ ipad(landscape)                        // all iPads (1, 2, 3, 4, Mini) only landscape
+//   @ ipad(portrait)                         // all iPads (1, 2, 3, 4, Mini) only portrait
+//   ---
+//   @ ipad-retina                            // only iPad (3, 4) landscape & portrait
+//   @ ipad-retina(landscape)                 // only iPad (3, 4) only landscape
+//   @ ipad-retina(portrait)                  // only iPad (3, 4) only portrait
+//   ---
+//   @ hdpi(ratio)                            // devices with hidpi displays (default ratio: 1.3)
+//
+// ---------------------------------------------------------------------------------------------------------------------
+
+// ---------------------------------------------------------------------------------------------------------------------
+// --- screen ----------------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------
+
+_only-screen(args)
+  s = 'only screen'
+  i = 0
+  for key, value in args
+    if value != ''
+      s = s + ' and ('+key+': '+value+')'
+  @media s
+    {block}
+
+__device(min-width, max-width, wdpr, dar, o)
+  opt = {
+    'min-device-width': min-width,
+    'max-device-width': max-width,
+    '-webkit-device-pixel-ratio': wdpr,
+    'device-aspect-ratio': dar,
+    'orientation': o
+  }
+  +_only-screen(opt)
+    {block}
+
+screen(resMin, resMax)
+  @media screen and (min-width: resMin) and (max-width: resMax)
+    {block}
+
+max-screen(res)
+  @media screen and (max-width: res)
+    {block}
+
+min-screen(res)
+  @media screen and (min-width: res)
+    {block}
+
+screen-height(resMin, resMax)
+  @media screen and (min-height: resMin) and (max-height: resMax)
+    {block}
+
+max-screen-height(res)
+  @media screen and (max-height: res)
+    {block}
+
+min-screen-height(res)
+  @media screen and (min-height: res)
+    {block}
+
+hdpi(ratio = 1.3)
+  // Based on bourbon hidpi-media-queries file
+  //   https://github.com/thoughtbot/bourbon/blob/master/app/assets/stylesheets/css3/_hidpi-media-query.scss
+  // HiDPI mixin. Default value set to 1.3 to target Google Nexus 7
+  //   http://bjango.com/articles/min-device-pixel-ratio/
+  s =     'only screen and (-webkit-min-device-pixel-ratio: '+ratio+'), '
+  s = s + 'only screen and (min--moz-device-pixel-ratio: '+ratio+'), '
+  s = s + 'only screen and (-o-min-device-pixel-ratio: '+ratio+'/1), '
+  s = s + 'only screen and (min-resolution: '+unit(round(ratio*96), dpi)+'), '
+  s = s + 'only screen and (min-resolution: '+unit(ratio, dppx)+')'
+  @media s
+    {block}
+
+iphone3(o='')
+  +__device(320px, 480px, 1, '', o)
+    {block}
+
+iphone4(o='')
+  +__device(320px, 480px, 2, '2/3', o)
+    {block}
+
+iphone5(o='')
+  +__device(320px, 568px, 2, '40/71', o)
+    {block}
+
+ipad(o='')
+  +__device(768px, 1024px, '', '', o)
+    {block}
+
+ipad-retina(o='')
+  +__device(768px, 1024px, 2, '', o)
+    {block}
