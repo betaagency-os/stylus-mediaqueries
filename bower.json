@@ -1,0 +1,20 @@
+{
+  "name": "stylus-mediaqueries",
+  "version": "0.0.1",
+  "homepage": "https://github.com/betaagency-os/stylus-mediaqueries",
+  "authors": [
+    "Aleksej Kamynin <zendzirou@gmail.com>"
+  ],
+  "description": "Media query mixins for stylus",
+  "main": "mediaqueries.styl",
+  "keywords": [
+    "stylus",
+    "mixins",
+    "media",
+    "queries",
+    "mediaqueries",
+    "adaptive",
+    "responsive"
+  ],
+  "license": "MIT"
+}
